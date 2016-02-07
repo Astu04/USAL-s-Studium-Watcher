@@ -1,0 +1,17 @@
+download () {
+	var29="$( wget -q -O- --keep-session-cookies --load-cookies cookies_moodle2.txt https://moodle2.usal.es/course/view.php?id="$subjectcode" | sed -e '/M.util.js_pending(/d' -e '/action_link/d' -e '/Actividad desde/d'  )"
+	var30="$(diff --ignore-all-space "$subject2".html <(echo "$var29"))"
+	if [ -n "$var30" ]
+	then
+			( echo $var30 | sed -e 's@https://moodle2.usal.es/mod/resource/view.php?id=@\nhttps://moodle2.usal.es/mod/resource/view.php?id=@g' -e 's@"><img src="@\n@g' | grep https://moodle2.usal.es/mod/resource/view.php?id= ; echo "$var30" ) | mailx -s "[STUDIUM] Cambios en $subject2" $sendtothismail
+			echo "$var29" > $subject2.html
+	fi
+	unset var29 var30
+}
+
+sendtothismail='mail@mail.com'
+
+subject='Subject name with spaces'
+subject2='Subject_name_without_spaces'
+subjectcode='12345'
+download
