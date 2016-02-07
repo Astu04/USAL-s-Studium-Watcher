@@ -8,6 +8,7 @@ Execute the script on will or via crontab.
 
 
 sudo apt-get install ssmtp
+
 nano /etc/ssmtp/ssmtp.conf 
  	
 
